@@ -11,6 +11,7 @@ export default function RegistrationForm() {
     // States for checking the errors
     const [submitted, setSubmitted] = useState(false);
     const [error, setError] = useState(false);
+    const [uniqueError, setUniqueError] = useState(false);
 
     // Handling the name change
     const handleUsername = (e) => {
@@ -37,13 +38,39 @@ export default function RegistrationForm() {
     };
 
     // Handling the form submission
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        if (name === '' || email === '' || password === '') {
+        if (username === '' || name === '' || email === '' || password === '') {
             setError(true);
         } else {
-            setSubmitted(true);
-            setError(false);
+            var json_body = {
+                username: username,
+                name: name,
+                email: email,
+                password: password
+            };
+
+            await fetch("http://localhost:8080/skarmory/users", {
+                credentials: 'include',
+                method: 'POST',
+                body: JSON.stringify(json_body),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+            }).then((response) => {
+                if (response.status === 400) {
+                    setUniqueError(true);
+                    setSubmitted(false);
+                }
+                else if (response.status !== 201) {
+                    setError(true);
+                    setSubmitted(false);
+                }
+                else {
+                    setError(false);
+                    setSubmitted(true);
+                }
+            });
         }
     };
 
@@ -55,7 +82,7 @@ export default function RegistrationForm() {
                 style={{
                     display: submitted ? '' : 'none',
                 }}>
-                <h1>User {name} successfully registered!!</h1>
+                <h1>User {username} successfully registered!!</h1>
             </div>
         );
     };
@@ -68,7 +95,19 @@ export default function RegistrationForm() {
                 style={{
                     display: error ? '' : 'none',
                 }}>
-                <h1>Please enter all the fields</h1>
+                <h1>There was an error registering your account, please try again!</h1>
+            </div>
+        );
+    };
+
+    const uniqueErrorMessage = () => {
+        return (
+            <div
+                className="uniqueError"
+                style={{
+                    display: uniqueError ? '' : 'none',
+                }}>
+                <h1>Your username or email is already taken, please try again!</h1>
             </div>
         );
     };
@@ -87,7 +126,7 @@ export default function RegistrationForm() {
 
                 <label className="label">Username</label>
                 <input onChange={handleUsername} className="input"
-                       value={name} type="text" />
+                       value={username} type="text" />
 
                 <label className="label">Email</label>
                 <input onChange={handleEmail} className="input"
@@ -105,6 +144,7 @@ export default function RegistrationForm() {
             {/* Calling to the methods */}
             <div className="messages">
                 {errorMessage()}
+                {uniqueErrorMessage()}
                 {successMessage()}
             </div>
         </div>

@@ -285,8 +285,7 @@
 
 .success {
   display: block;
-  background-color: seagreen;
-  color: black;
+  color: seagreen;
   width: fit-content;
   height: 50px;
   padding: 5px;
