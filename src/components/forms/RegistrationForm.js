@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import  { useNavigate } from 'react-router-dom'
 import bcrypt from 'bcryptjs'
 
 export default function RegistrationForm() {
@@ -13,6 +14,13 @@ export default function RegistrationForm() {
     const [submitted, setSubmitted] = useState(false);
     const [error, setError] = useState(false);
     const [uniqueError, setUniqueError] = useState(false);
+
+    const navigate = useNavigate();
+
+    // Redirect to the login page once registered
+    const redirectToLogin = () => {
+        navigate("/login");
+    };
 
     // Handling the name change
     const handleUsername = (e) => {
@@ -74,6 +82,7 @@ export default function RegistrationForm() {
                 else {
                     setError(false);
                     setSubmitted(true);
+                    redirectToLogin();
                 }
             });
         }

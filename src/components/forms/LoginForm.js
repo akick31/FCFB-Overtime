@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import  { useNavigate } from 'react-router-dom'
+import bcrypt from "bcryptjs";
 
 export default function LoginForm() {
 
@@ -9,6 +11,13 @@ export default function LoginForm() {
     // States for checking the errors
     const [submitted, setLogin] = useState(false);
     const [error, setError] = useState(false);
+
+    const navigate = useNavigate();
+
+    // Redirect to the home page once logged in
+    const redirectToHome= () => {
+        navigate("/");
+    };
 
     // Handling the name change
     const handleUsername = (e) => {
@@ -28,7 +37,7 @@ export default function LoginForm() {
         if (username === '' || password === '') {
             setError(true);
         } else {
-            const response = await fetch("http://localhost:8080/skarmory/user/login/" + username + "/" + password)
+            const response = await fetch("http://localhost:8080/skarmory/user/login/" + username)
             if (response.status === 400) {
                 setError(true);
                 setLogin(false);
@@ -38,8 +47,14 @@ export default function LoginForm() {
                 setLogin(false);
             }
             else {
-                setLogin(true);
-                setError(false);
+                const data = await response.json();
+                const passwordHashed = data.password;
+                const passwordAttempt = bcrypt.hashSync(password, data.salt);
+                if (passwordHashed === passwordAttempt) {
+                    setLogin(true);
+                    setError(false);
+                    redirectToHome();
+                }
             }
         }
     };
