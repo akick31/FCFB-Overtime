@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import bcrypt from 'bcryptjs'
 
 export default function RegistrationForm() {
 
@@ -43,11 +44,15 @@ export default function RegistrationForm() {
         if (username === '' || name === '' || email === '' || password === '') {
             setError(true);
         } else {
+
+            const salt = bcrypt.genSaltSync(10);
+
             var json_body = {
                 username: username,
                 name: name,
                 email: email,
-                password: password
+                password: bcrypt.hashSync(password, salt),
+                salt: salt
             };
 
             await fetch("http://localhost:8080/skarmory/users", {

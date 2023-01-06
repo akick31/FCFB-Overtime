@@ -237,7 +237,7 @@
 }
 
 /* Register User Form */
-.register-form {
+.register-form, .login-form {
   text-align: center;
 }
 
