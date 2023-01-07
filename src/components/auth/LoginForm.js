@@ -2,8 +2,8 @@ import { useState } from 'react';
 import  { useNavigate } from 'react-router-dom'
 import bcrypt from "bcryptjs";
 import { API_SERVER } from '../../config/config'
+import Cookies from 'universal-cookie';
 
-import PropTypes from 'prop-types';
 import React from 'react';
 
 export default function LoginForm() {
@@ -15,8 +15,6 @@ export default function LoginForm() {
     // States for checking the errors
     const [submitted, setLogin] = useState(false);
     const [error, setError] = useState(false);
-
-    const [token, setToken] = useState('');
 
     const navigate = useNavigate();
 
@@ -43,7 +41,7 @@ export default function LoginForm() {
         if (username === '' || password === '') {
             setError(true);
         } else {
-            const response = await fetch(API_SERVER + "user/login/" + username)
+            const response = await fetch(API_SERVER + "user/username/" + username)
             if (response.status === 400) {
                 setError(true);
                 setLogin(false);
@@ -57,7 +55,7 @@ export default function LoginForm() {
                 const passwordHashed = data.password;
                 const passwordAttempt = bcrypt.hashSync(password, data.salt);
                 if (passwordHashed === passwordAttempt) {
-                    const response = await fetch(API_SERVER + "token", {
+                    const response = await fetch(API_SERVER + "session", {
                         credentials: 'include',
                         method: 'POST',
                         body: JSON.stringify(data),
@@ -65,9 +63,9 @@ export default function LoginForm() {
                             'Content-type': 'application/json; charset=UTF-8',
                         },
                     })
-                    const token = await response.json();
-                    sessionStorage.setItem('token', JSON.stringify(token.token));
-                    sessionStorage.setItem('username', JSON.stringify(username));
+                    const sessionData = await response.json();
+                    const cookies = new Cookies();
+                    cookies.set('session_id', sessionData.id);
                     setLogin(true);
                     setError(false);
                     redirectToHome();

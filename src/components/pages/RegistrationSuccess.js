@@ -5,7 +5,7 @@ const RegisterSuccess = () => {
     return (
         <div className="register-success">
             <div className="register-success-logo">
-                <img src={mainLogo}/>
+                <img src={mainLogo} alt={"Overtime Logo"}/>
             </div>
 
             <h2>Success!</h2>
