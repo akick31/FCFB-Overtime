@@ -1,5 +1,4 @@
-import LoginForm from '../forms/LoginForm';
-import useFetch from '../hooks/useFetch';
+import LoginForm from '../auth/LoginForm';
 
 const Login = () => {
     return (

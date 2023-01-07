@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import  { useNavigate } from 'react-router-dom'
 import bcrypt from 'bcryptjs'
+import { API_SERVER } from '../../config/config'
 
 export default function RegistrationForm() {
 
@@ -18,8 +19,8 @@ export default function RegistrationForm() {
     const navigate = useNavigate();
 
     // Redirect to the login page once registered
-    const redirectToLogin = () => {
-        navigate("/login");
+    const redirectToSuccess = () => {
+        navigate("/registration_success");
     };
 
     // Handling the name change
@@ -60,10 +61,11 @@ export default function RegistrationForm() {
                 name: name,
                 email: email,
                 password: bcrypt.hashSync(password, salt),
-                salt: salt
+                salt: salt,
+                role: "reader"
             };
 
-            await fetch("http://localhost:8080/skarmory/users", {
+            await fetch(API_SERVER + "users", {
                 credentials: 'include',
                 method: 'POST',
                 body: JSON.stringify(json_body),
@@ -82,7 +84,7 @@ export default function RegistrationForm() {
                 else {
                     setError(false);
                     setSubmitted(true);
-                    redirectToLogin();
+                    redirectToSuccess();
                 }
             });
         }

@@ -1,5 +1,4 @@
-import RegistrationForm from '../forms/RegistrationForm';
-import useFetch from '../hooks/useFetch';
+import RegistrationForm from '../auth/RegistrationForm';
 
 const Register = () => {
     return (
