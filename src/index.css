@@ -6,7 +6,7 @@
 
 @font-face {
   font-family: SF;
-  src: url('fonts/SFUIText-Regular.otf');
+  src: url('assets/fonts/SFUIText-Regular.otf');
 }
 
 
@@ -157,6 +157,41 @@
   right:0;
 }
 
+/* not found */
+.not-found {
+  text-align: center;
+  font-size: x-large;
+}
+
+.not-found h2{
+  text-align: center;
+  font-size: xxx-large;
+}
+
+/* registration success */
+.register-success {
+  text-align: center;
+  font-size: x-large;
+}
+
+.register-success h2{
+  text-align: center;
+  font-size: xxx-large;
+}
+
+/* logout success */
+.logout-success {
+  text-align: center;
+  font-size: x-large;
+}
+
+.logout-success h2{
+  text-align: center;
+  font-size: xxx-large;
+}
+
+
+
 /* article previews / list */
 .article-preview {
   padding: 10px 16px;
@@ -237,7 +272,7 @@
 }
 
 /* Register User Form */
-.register-form {
+.register-form, .login-form {
   text-align: center;
 }
 

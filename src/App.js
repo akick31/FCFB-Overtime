@@ -4,9 +4,14 @@ import CreateArticle from './components/pages/CreateArticle';
 import ArticleDetails from './components/articles/ArticleDetails';
 import NotFound from './components/pages/NotFound';
 import Register from "./components/pages/Register";
+import RegisterSuccess from "./components/pages/RegistrationSuccess";
+import Login from "./components/pages/Login";
+import Logout from "./components/pages/Logout";
 import FCS from "./components/pages/FCS";
 import FBS from "./components/pages/FBS";
+
 import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+
 
 function App() {
     return (
@@ -20,6 +25,9 @@ function App() {
                         <Route path="/fcs" element={<FCS/>} />
                         <Route path="/create-article" element={<CreateArticle/>} />
                         <Route path="/register" element={<Register/>} />
+                        <Route path="/registration_success" element={<RegisterSuccess/>} />
+                        <Route path="/login" element={<Login/>} />
+                        <Route path="/logout" element={<Logout/>} />
                         <Route path="/articles/:category/:id" element={<ArticleDetails/>} />
                         <Route path="*" element={<NotFound/>} />
                     </Routes>
